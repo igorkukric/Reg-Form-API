@@ -108,4 +108,5 @@ function updateUserTable() {
     row.appendChild(countryCell);
     userTableBody.appendChild(row);
   });
+  
 }
