@@ -31,10 +31,10 @@ h1 {
   flex-direction: column;
   justify-content: center;
   border: 1px solid #ccc;
-  width: 350px;
+  width: 450px;
   position: relative;
-  top: 53px;
-  left: 100px;
+  top: 73px;
+  left: 20px;
   border-radius: 4px;
   box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
 }
