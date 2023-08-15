@@ -4,7 +4,7 @@ const emailInput = document.getElementById("email");
 const passwordInput = document.getElementById("password");
 const confirmPasswordInput = document.getElementById("confirm-password");
 const countrySelect = document.getElementById("country");
-const userTableBody = document.querySelector("#user-table tbody");
+const userTableBody = document.querySelector("#user-table");
 
 const registeredUsers = [];
 
@@ -50,9 +50,11 @@ registrationForm.addEventListener("submit", function (event) {
     alert("Please enter a valid email address.");
     return;
   }
-   // Check if username is valid
-   if (!usernamePattern.test(newUsername)) {
-    alert("Username must be 3 to 20 characters and can only contain letters, numbers, and underscores.");
+  // Check if username is valid
+  if (!usernamePattern.test(newUsername)) {
+    alert(
+      "Username must be 3 to 20 characters and can only contain letters, numbers, and underscores."
+    );
     return;
   }
   // Check if password is valid
@@ -62,6 +64,48 @@ registrationForm.addEventListener("submit", function (event) {
     );
     return;
   }
-   
+  // Check if username or email already exists
+  const userExist = registeredUsers.some(
+    (user) => user.username === newUsername || user.email === newEmail
+  );
 
+  if (userExist) {
+    alert("Username or email already exists. Please choose a different one.");
+    return;
+  }
+
+  // Add the new user to the registeredUsers array
+  registeredUsers.push({
+    username: newUsername,
+    email: newEmail,
+    gender: selectedGender ? selectedGender.value : "N/A",
+    country: newCountry,
+  });
+  // Clear form inputs
+  usernameInput.value = "";
+  emailInput.value = "";
+  passwordInput.value = "";
+  confirmPasswordInput.value = "";
+  // Update user table
+  updateUserTable();
 });
+
+function updateUserTable() {
+  userTableBody.innerHTML = "";
+
+  // Populate user table with registered users
+  registeredUsers.forEach((user) => {
+    const row = document.createElement("tr");
+    const usernameCell = document.createElement("td");
+    usernameCell.textContent = user.username;
+    const emailCell = document.createElement("td");
+    emailCell.textContent = user.email;
+    const countryCell = document.createElement("td");
+    countryCell.textContent = user.country;
+
+    row.appendChild(usernameCell);
+    row.appendChild(emailCell);
+    row.appendChild(countryCell);
+    userTableBody.appendChild(row);
+  });
+}
