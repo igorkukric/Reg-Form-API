@@ -35,7 +35,7 @@ registrationForm.addEventListener("submit", function (event) {
   const username = document.getElementById("username").value;
   const newEmail = document.getElementById("email").value;
   const newPassword = document.getElementById("password").value;
-  const confirmedPassword = document.getElementById("confirm-password");
+  const confirmedPassword = document.getElementById("confirm-password").value;
   const newCountry = countrySelect.value;
   const selectedGender = document.querySelector('input[name="gender"]:checked');
 
@@ -55,8 +55,9 @@ registrationForm.addEventListener("submit", function (event) {
     errorElement.textContent =
       "Password must be 6 to 20 characters and include at least one uppercase letter, one lowercase letter, and one digit.";
     return;
-  } else if (passwordInput !== confirmPasswordInput) {
+  } else if (newPassword !== confirmedPassword) {
     errorElement.textContent = "Passwords do not match.";
+    return
   } else {
     errorElement.textContent = "";
   }
