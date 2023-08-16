@@ -31,52 +31,50 @@ fetch("https://restcountries.com/v3.1/all")
 registrationForm.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  const newUsername = usernameInput.value;
-  const newEmail = emailInput.value;
-  const newPassword = passwordInput.value;
-  const confirmedPassword = confirmPasswordInput.value;
+  const errorElement = document.getElementById("errorText");
+  const username = document.getElementById("username").value;
+  const newEmail = document.getElementById("email").value;
+  const newPassword = document.getElementById("password").value;
+  const confirmedPassword = document.getElementById("confirm-password");
   const newCountry = countrySelect.value;
   const selectedGender = document.querySelector('input[name="gender"]:checked');
 
-  // Check if passwords match
-  if (newPassword !== confirmedPassword) {
-    alert("Passwords do not match. Please enter them again.");
-    passwordInput.value = "";
-    confirmPasswordInput = "";
+  // Check if username is valid
+  if (!usernamePattern.test(username)) {
+    errorElement.textContent =
+      "Username must be 3 to 20 characters and can only contain letters, numbers, and underscores.";
     return;
   }
   // Check if email is valid
   if (!emailPattern.test(newEmail)) {
-    alert("Please enter a valid email address.");
-    return;
-  }
-  // Check if username is valid
-  if (!usernamePattern.test(newUsername)) {
-    alert(
-      "Username must be 3 to 20 characters and can only contain letters, numbers, and underscores."
-    );
+    errorElement.textContent = "Please enter a valid email address.";
     return;
   }
   // Check if password is valid
   if (!passwordPattern.test(newPassword)) {
-    alert(
-      "Password must be 6 to 20 characters and include at least one uppercase letter, one lowercase letter, and one digit."
-    );
+    errorElement.textContent =
+      "Password must be 6 to 20 characters and include at least one uppercase letter, one lowercase letter, and one digit.";
     return;
+  } else if (passwordInput !== confirmPasswordInput) {
+    errorElement.textContent = "Passwords do not match.";
+  } else {
+    errorElement.textContent = "";
   }
+
   // Check if username or email already exists
   const userExist = registeredUsers.some(
-    (user) => user.username === newUsername || user.email === newEmail
+    (user) => user.username === username || user.email === newEmail
   );
 
   if (userExist) {
-    alert("Username or email already exists. Please choose a different one.");
+    errorElement.textContent =
+      "Username or email already exists. Please choose a different one.";
     return;
   }
 
   // Add the new user to the registeredUsers array
   registeredUsers.push({
-    username: newUsername,
+    username: username,
     email: newEmail,
     gender: selectedGender ? selectedGender.value : "N/A",
     country: newCountry,
@@ -102,11 +100,13 @@ function updateUserTable() {
     emailCell.textContent = user.email;
     const countryCell = document.createElement("td");
     countryCell.textContent = user.country;
+    const GenderCell = document.createElement("td");
+    GenderCell.textContent = user.gender;
 
     row.appendChild(usernameCell);
     row.appendChild(emailCell);
     row.appendChild(countryCell);
+    row.appendChild(GenderCell);
     userTableBody.appendChild(row);
   });
-  
 }
